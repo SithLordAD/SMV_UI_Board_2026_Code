@@ -31,19 +31,19 @@ ButtonDebug btn_dbg = {0};
 // button array to hold GPIO pins, counters, and message headers
 PushButton buttons[] =
 {
-    { GPIOA, GPIO_PIN_15, GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.left,         Blink_Left  }, // left
-    { GPIOB, GPIO_PIN_7,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.right,        Blink_Right }, // right
-    { GPIOC, GPIO_PIN_13, GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.regen,        Reverse     }, // regen (dupe reverse)
-    { GPIOA, GPIO_PIN_0,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.reverse,      Reverse     }, // reverse
-    { GPIOA, GPIO_PIN_1,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.hazard,       Hazard      }, // hazard
-    { GPIOA, GPIO_PIN_4,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.spare_switch, Switch      }, // spare switch
-    { GPIOB, GPIO_PIN_0,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.headlights,   Headlights  }, // headlights
-    { GPIOC, GPIO_PIN_2,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.wipers,       Wipers      }, // wipers
-	{ GPIOC, GPIO_PIN_1,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.DAQ_button,   DAQ_Button  }, // DAQ button
-    { GPIOC, GPIO_PIN_3,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.horn,         Horn        }, // horn
-	{ GPIOC, GPIO_PIN_0,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.spare_button, Button      }, // spare button
-    { GPIOB, GPIO_PIN_5,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.supercap,     DAQ_Button  }, // supercap
-    { GPIOA, GPIO_PIN_10, GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.estop,        Motor       }, // e-stop
+    { GPIOA, GPIO_PIN_15, GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.left,         Blink_Left  		}, // left
+    { GPIOB, GPIO_PIN_7,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.right,        Blink_Right 		}, // right
+    { GPIOC, GPIO_PIN_13, GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.regen,        Regen       		}, // regen
+    { GPIOA, GPIO_PIN_0,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.reverse,      Reverse     		}, // reverse
+    { GPIOA, GPIO_PIN_1,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.hazard,       Hazard      		}, // hazard
+    { GPIOA, GPIO_PIN_4,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.spare_switch, Spare_Switch		}, // spare switch
+    { GPIOB, GPIO_PIN_0,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.headlights,   Headlights  		}, // headlights
+    { GPIOC, GPIO_PIN_2,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.wipers,       Wipers      		}, // wipers
+	{ GPIOC, GPIO_PIN_1,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.DAQ_button,   DAQ_Button  		}, // DAQ button
+    { GPIOC, GPIO_PIN_3,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.horn,         Horn        		}, // horn
+	{ GPIOC, GPIO_PIN_0,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.spare_button, Spare_Button        }, // spare button
+    { GPIOB, GPIO_PIN_5,  GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.supercap,     Supercap_Discharge	}, // supercap
+    { GPIOA, GPIO_PIN_10, GPIO_PIN_SET, GPIO_PIN_SET, 0, &btn_dbg.estop,        Emergency_Stop		}, // e-stop
 };
 
 #define NUM_BUTTONS (sizeof(buttons)/sizeof(buttons[0]))
