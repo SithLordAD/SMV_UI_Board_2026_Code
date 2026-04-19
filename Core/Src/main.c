@@ -2,9 +2,6 @@
 #include "button.h"
 #include "smv_canbus.h"
 
-
-// Test change.
-
 CAN_HandleTypeDef hcan1;
 CANBUS can1;
 
