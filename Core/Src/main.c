@@ -2,7 +2,6 @@
 #include "button.h"
 #include "smv_canbus.h"
 
-
 CAN_HandleTypeDef hcan1;
 CANBUS can1;
 
@@ -80,7 +79,8 @@ int main(void)
       {
           Button_UpdateCAN(&buttons[i], &can1); /* detect button updates and send over CAN */
       }
-      HAL_Delay(5);
+
+
   }
 
 }
