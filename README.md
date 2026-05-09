@@ -1,40 +1,69 @@
-# SMV_UI_TestBench
+# SMV UI Board
 
-This is the test bench for the UI board and is currently fully functional
-
-## Transmitter
-
-The `transmitter` folder is the code for the UI board. It uses a button class to send the appropriate message over. Each button is initialized with mode `PULLUP` and has a counter keeping track of how many times it has been pressed. This number is then sent over can every time it is updated. 
-
-### Setup
-
-To set up the UI Board, download all the files in the `transmitter` folder and add the `.h` to `Inc/` and the `.c` files to `Src/`. To set up the IOC configuration, you must follow the instructions in the CAN Setup megadoc (on Notion). Essentially just set up the clock and enable `CAN1`. The appropriate GPIO pins will already be initialized in `main.c`. You will also need to include the [SMV CANBus library](https://github.com/UCLA-Bruin-Supermileage/SMV_STM32_CANbus) in your project folder.
-
-### Code Explanation
-
-There is an array of buttons where each button has its own struct, see `button.h`. Whenever a button is clicked, the GPIO pin state is flipped and a counter is incremented. This counter is sent over CAN with the correct message corresponding to what is being sent. This message is important for the recieving boards to know what data is being sent.
-
-## Reciever
-
-The `reciever` folder is the code that handles all the receiving of the CAN messages. For the sake of the test bench, all the messages are assumed to be sent to the same board, however in actual use, the messages will all propogate to their respective boards. Essentially the messages are read in depending on the message type in the CAN frame and then stored in an array. The supercap and emergency stop data is being sent under the `DAQ_Button` and `Motor` message ids since these two haven't been added to the CAN library.
-
-The actual reading of the data is a little unintuitive. Since there is an existing enum for the UI Messages defined in the CAN library, I use it to index into the recieved array. However, the way the buttons are wired is not in the same order as the messages in the enum so you will have to check what the current index is. For example, the first button is `Reverse` which has a index of `2`. This means in the `btn_dbg` array, the third value will be updated.
+This is the test bench for the UI board.
 
 ## Setup
-Similar to the `transmitter` set up, the CANBus library files should be added and the same configuration for the MCU must be selected.
 
-## Button → CAN Message Mapping
+This board depends on the [SMV CANbus library](https://github.com/UCLA-Bruin-Supermileage/SMV_STM32_CANbus) and uses a custom button library.
 
-The following table describes how the buttons are mapped out, from left to right. 
+### Pin Mappings
 
-| Message Name | Pin  | Target Board(s) | Message ID    |
-|--------------|------|-----------------|---------------|
-| Reverse      | PA0  | Bear_1         | Reverse       |
-| Hazard       | PA1  | FC, RC         | Hazard        |
-| Headlights   | PB0  | FC             | Headlights    |
-| Wipers       | PC2  | FC             | Wipers        |
-| Horn         | PC3  | FC             | Horn          |
-| Blink_Left   | PA15 | FC, RC         | Blink_Left    |
-| Blink_Right  | PB7  | FC, RC         | Blink_Right   |
-| Supercap     | PB5  | Bear_1         | DAQ_Button    |
-| E-stop       | PA10 | Bear_1         | Motor         |
+Aside from the CAN pins, the pins should be set to GPIO input.
+
+| Name | Pin |
+|----- | ---- |
+| Left | PA15 |
+| Right | PB7 |
+| Regen | PC13 | 
+| Reverse | PA0 |
+| Hazard | PA1 |
+| Switch | PA4 |
+| Headlights | PB0 |
+| Wipers | PC2 |
+| DAQ Button | PC1 |
+| Horn | PC3 |
+| Button | PC0 |
+| CAN1_TX | PA12 |
+| CAN1_RX | PA11 |
+| Supercap Discharge | PB5|
+| Emergency Stop | PA10 |
+
+The following peripheral pins should be set to GPIO output
+
+| Name | Pin |
+|----- | ---- |
+| Digit_1 | PD2 |
+| Digit_2 | PC12 |
+| Digit_3 | PC11 |
+| Digit_4 | PC10 |
+| BCD_A | PC5 |
+| BCD_B | PC9 |
+| BCD_C | PC8 |
+| BCD_D | PC6 |
+| DP | PA6 |
+
+## CAN Communication
+
+### CAN TX
+
+The UI board broadcasts all the GPIO input pins through the button library. 
+
+| Message | Target Board(s) | 
+| ------- | ------------ |
+| Left | FC, RC |
+| Right | FC, RC |
+| Regen | ? |
+| Reverse | ? |
+| Hazard | FC, RC |
+| Switch | DAQ |
+| Headlights | FC |
+| Wipers | FC |
+| DAQ Button | DAQ |
+| Horn | FC |
+| Button | DAQ |
+| Supercap Discharge | ? |
+| Emergency Stop | Safety |
+
+### CAN RX
+
+The board listens for RPM data from the motor controller board in order to display the speed of the car on a speedometer. It uses the DIGIT_x and BCD_x pins to do so.
