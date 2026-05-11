@@ -2,34 +2,36 @@
 #define BUTTON_H
 
 #include "smv_board_enums.h"
-#include "stm32f4xx_hal.h"
 #include "smv_canbus.h"
+#include "stdbool.h"
+#include "stm32f4xx_hal.h"
 
-
-/* Debounce time in milliseconds */
 #define BUTTON_DEBOUNCE_MS 50
 
-/* struct to hold all the data per button */
-typedef struct
-{
-    GPIO_TypeDef *port;
-    uint16_t pin;
+typedef enum {
+  BTN_TYPE_MOMENTARY,
+  BTN_TYPE_BLINK,
+} ButtonType;
 
-    GPIO_PinState last_raw_state;   // last immediate read
-    GPIO_PinState stable_state;     // debounced stable state
+typedef struct {
+  GPIO_TypeDef *port;
+  uint16_t pin;
 
-    uint32_t last_debounce_time;
+  GPIO_PinState last_raw_state;
+  GPIO_PinState stable_state;
 
-    uint32_t *counter;              // optional debug counter (can be NULL)
-    enum UIMessage msg;              // CAN message enum
+  uint32_t last_debounce_time;
 
+  uint32_t *counter;
+  enum UIMessage msg;
+
+  ButtonType type;
+  bool blink_state;           // current blink on/off
+  uint32_t last_blink_time;   // tracks blink interval
+  uint32_t blink_interval_ms; // 0 for momentary buttons
 } PushButton;
 
-/* Initialize button state */
 void Button_Init(PushButton *btn);
-
-/* Update button and send ON/OFF over CAN */
 void Button_UpdateCAN(PushButton *btn, CANBUS *can);
 
 #endif
-

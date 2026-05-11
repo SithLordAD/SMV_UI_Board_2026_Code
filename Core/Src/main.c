@@ -33,8 +33,15 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define BTN(port, pin, counter, msg)                                           \
-  {port, pin, GPIO_PIN_SET, GPIO_PIN_SET, 0, counter, msg}
+#define BTN_MOM(port, pin, counter, msg)                                       \
+  {port,    pin, GPIO_PIN_SET,       GPIO_PIN_SET, 0,                          \
+   counter, msg, BTN_TYPE_MOMENTARY, false,        0,                          \
+   0}
+
+#define BTN_BLK(port, pin, counter, msg, interval)                             \
+  {port,  pin, GPIO_PIN_SET, GPIO_PIN_SET, 0, counter, msg, BTN_TYPE_BLINK,    \
+   false, 0,   interval}
+
 #define NUM_BUTTONS 13
 /* USER CODE END PD */
 
@@ -70,19 +77,19 @@ ButtonDebug btn_dbg = {0};
 
 // CAN BUTTON SETUP
 PushButton buttons[] = {
-    BTN(GPIOA, GPIO_PIN_15, &btn_dbg.left, Blink_Left),
-    BTN(GPIOB, GPIO_PIN_7, &btn_dbg.right, Blink_Right),
-    BTN(GPIOC, GPIO_PIN_13, &btn_dbg.regen, Regen),
-    BTN(GPIOA, GPIO_PIN_0, &btn_dbg.reverse, Reverse),
-    BTN(GPIOA, GPIO_PIN_1, &btn_dbg.hazard, Hazard),
-    BTN(GPIOA, GPIO_PIN_4, &btn_dbg.spare_switch, Spare_Switch),
-    BTN(GPIOB, GPIO_PIN_0, &btn_dbg.headlights, Headlights),
-    BTN(GPIOC, GPIO_PIN_2, &btn_dbg.wipers, Wipers),
-    BTN(GPIOC, GPIO_PIN_1, &btn_dbg.DAQ_button, DAQ_Button),
-    BTN(GPIOC, GPIO_PIN_3, &btn_dbg.horn, Horn),
-    BTN(GPIOC, GPIO_PIN_0, &btn_dbg.spare_button, Spare_Button),
-    BTN(GPIOB, GPIO_PIN_5, &btn_dbg.supercap, Supercap_Discharge),
-    BTN(GPIOA, GPIO_PIN_10, &btn_dbg.estop, Emergency_Stop),
+    BTN_BLK(GPIOA, GPIO_PIN_15, &btn_dbg.left, Blink_Left, 500),
+    BTN_BLK(GPIOB, GPIO_PIN_7, &btn_dbg.right, Blink_Right, 500),
+    BTN_MOM(GPIOC, GPIO_PIN_13, &btn_dbg.regen, Regen),
+    BTN_MOM(GPIOA, GPIO_PIN_0, &btn_dbg.reverse, Reverse),
+    BTN_BLK(GPIOA, GPIO_PIN_1, &btn_dbg.hazard, Hazard, 500),
+    BTN_MOM(GPIOA, GPIO_PIN_4, &btn_dbg.spare_switch, Spare_Switch),
+    BTN_MOM(GPIOB, GPIO_PIN_0, &btn_dbg.headlights, Headlights),
+    BTN_MOM(GPIOC, GPIO_PIN_2, &btn_dbg.wipers, Wipers),
+    BTN_MOM(GPIOC, GPIO_PIN_1, &btn_dbg.DAQ_button, DAQ_Button),
+    BTN_MOM(GPIOC, GPIO_PIN_3, &btn_dbg.horn, Horn),
+    BTN_MOM(GPIOC, GPIO_PIN_0, &btn_dbg.spare_button, Spare_Button),
+    BTN_MOM(GPIOB, GPIO_PIN_5, &btn_dbg.supercap, Supercap_Discharge),
+    BTN_MOM(GPIOA, GPIO_PIN_10, &btn_dbg.estop, Emergency_Stop),
 };
 
 CANBUS can1;
